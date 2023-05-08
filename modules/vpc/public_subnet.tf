@@ -17,7 +17,11 @@ resource "aws_route_table" "public" {
     route {
         cidr_block = "0.0.0.0/0"
         gateway_id = aws_internet_gateway.gw.id
-    }   
+    }
+    route {
+        cidr_block = "0.0.0.0/0"
+        nat_gateway_id = aws_nat_gateway.nat.id
+    }
     tags = {
         Name = "${var.name}-public-route-table"
     }
@@ -28,12 +32,13 @@ resource "aws_route_table_association" "public" {
     route_table_id = aws_route_table.public.id
 }
 
+resource "aws_eip" "nat" {
+    vpc=true
+}
+
 resource "aws_nat_gateway" "nat" {
     allocation_id = aws_eip.nat.id
     subnet_id     = aws_subnet.public.id
     depends_on = [aws_internet_gateway.gw]
 }
 
-resource "aws_eip" "nat" {
-    vpc=true
-}

@@ -3,6 +3,6 @@ resource "aws_vpc" "main" {
 	tags = {
 		Name = var.name
 	}
-}
 
+}
 
