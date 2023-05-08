@@ -28,3 +28,8 @@ variable "vpc_id" {
     description = "The vpc id for ec2"
     type = string
 }
+
+variable "ec2_instance_profile" {
+    description = "The IAM instance profile for ec2"
+    type = string
+}
