@@ -6,4 +6,5 @@ module "ec2_private_1" {
     associate_public_ip_address=false
     subnet_id = module.vpc.private_subnet_id
     vpc_id = module.vpc.vpc_id
+    ec2_instance_profile = module.s3_for_ec2.iam_instance_profile_for_ec2
 }
