@@ -5,8 +5,8 @@ resource "aws_instance" "ec2" {
     associate_public_ip_address = var.associate_public_ip_address
     subnet_id = var.subnet_id
     iam_instance_profile = var.ec2_instance_profile
+    key_name = var.key_name
     tags = {
         Name = var.name
     }
 }
-

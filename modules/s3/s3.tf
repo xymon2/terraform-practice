@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "s3_for_ec2" {
     }
 }
 
-resource "aws_s3_bucket_ownership_controls" "s3_for_ec2_controlse" {
+resource "aws_s3_bucket_ownership_controls" "s3_for_ec2_controls" {
   bucket = aws_s3_bucket.s3_for_ec2.id
   rule {
     object_ownership = "BucketOwnerPreferred"
@@ -14,7 +14,7 @@ resource "aws_s3_bucket_ownership_controls" "s3_for_ec2_controlse" {
 }
 
 resource "aws_s3_bucket_acl" "s3_for_ec2" {
-    depends_on = [aws_s3_bucket_ownership_controls.s3_for_ec2_controlse]
+    depends_on = [aws_s3_bucket_ownership_controls.s3_for_ec2_controls]
     bucket = aws_s3_bucket.s3_for_ec2.id
     acl = "private"
 }
@@ -65,24 +65,6 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_policy.arn
   role       = aws_iam_role.ec2_iam_role.name
 }
-
-data "aws_iam_policy_document" "s3_assume_role_policy" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    resources = [
-        aws_s3_bucket.s3_for_ec2.arn,
-        "${aws_s3_bucket.s3_for_ec2.arn}/*"
-    ]
-  }
-}
-
-resource "aws_iam_role_policy" "s3_assume_role_policy" {
-  name   = "s3_assume_role_policy"
-  role   = aws_iam_role.ec2_iam_role.name
-  policy = data.aws_iam_policy_document.s3_assume_role_policy.json
-}
-
 
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
   name = "ec2_instance_profile"

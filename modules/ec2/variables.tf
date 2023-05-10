@@ -33,3 +33,8 @@ variable "ec2_instance_profile" {
     description = "The IAM instance profile for ec2"
     type = string
 }
+
+variable "key_name" {
+    description = "The key pair to connect to ec2"
+    type = string
+}
